@@ -7,3 +7,4 @@ resource "aws_route53_record" "roboshop" {
   records = [aws_instance.terraform[count.index].private_ip]
   allow_overwrite = true
 }
+

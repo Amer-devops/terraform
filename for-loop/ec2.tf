@@ -1,17 +1,20 @@
 resource "aws_instance" "terraform" {
-    count = 3
+    # for_each = var.instances
+     for_each = toset(var.instances)
     ami = "ami-09c813fb71547fc4f"
+    # instance_type = each.value
     instance_type = "t3.micro"
     vpc_security_group_ids = [ aws_security_group.allow_all.id ]
     tags={
-        Name = var.instances[count.index]
+        Name = each.key
         Terraform = "true"
     }
  
 }
 
 resource "aws_security_group" "allow_all" {
-  name   = "allow-all"
+  name   = "allow-all-v2"
+
 
    egress {
     from_port        = 0 #from_port "0" to to_port "0" means all ports
@@ -27,12 +30,9 @@ resource "aws_security_group" "allow_all" {
     cidr_blocks      = ["0.0.0.0/0"] # internet
   }
   tags ={
-    Name = "allow-all"
-    
-
+    Name = "allow-all-v2"
   }
 }
-
 
 
  
