@@ -1,13 +1,9 @@
 resource "aws_instance" "terraform" {
-    # count = 3
-    
-    count = length(var.instances)
-
     ami = "ami-09c813fb71547fc4f"
-    instance_type = "t3.micro"
+    instance_type = local.instance_type
     vpc_security_group_ids = [ aws_security_group.allow_all.id ]
     tags={
-        Name = var.instances[count.index]
+        Name = "terraform1"
         Terraform = "true"
     }
  
@@ -31,11 +27,8 @@ resource "aws_security_group" "allow_all" {
   }
   tags ={
     Name = "allow-all"
-    
-
   }
 }
-
 
 
  
